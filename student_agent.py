@@ -3,6 +3,17 @@ import numpy as np
 import pickle
 import random
 import gym
+import os
+
+def load_data():
+    if os.path.exists("q_table.pkl"):
+        with open("q_table.pkl", "rb") as f:
+            q_table = pickle.load(f)
+    else: 
+        q_table = {}
+    
+    return q_table
+
 
 def get_action(obs):
     
@@ -12,33 +23,24 @@ def get_action(obs):
     #       To prevent crashes, implement a fallback strategy for missing keys. 
     #       Otherwise, even if your agent performs well in training, it may fail during testing.
 
-    # TODO state representation agent pos(x,y), pickup pos (x,y), dropoff(x,y), , passenger_picked_up: (0,1 if passenger is picked up), goal(x, y) maybe obstacle location or just penalize for hitting obstacles 
 
-    # TODO reward shaping, only pickup if no passenger and on the correct field, only dropoff if passenger and on the correct field
-    # after correct pickup, move to destination
+    # NOTE 
+    # obs = (taxi_row, taxi_col, self.stations[0][0],self.stations[0][1] ,self.stations[1][0],self.stations[1][1],self.stations[2][0],self.stations[2][1],self.stations[3][0],self.stations[3][1],obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look)
+    # obs = (taxi_pos, R_pos, G_pos, y_pos, B_pos, obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look) 
+    q_table, _ = load_data()
+    state = obs
+
     # penalize for hitting obstacles    
-    reward_shaping = True
-    picked_bonus_claimed = False
+    if state not in q_table:
+        q_table[state] = np.zeros(6, dtype=np.float32)
 
-    # if reward_shaping:
-    #     shaped_reward = 0
-    #     if not picked_up_now and picked_up_before:
-    #         shaped_reward -= 0.3
-    #     if picked_up_now and not picked_up_before and not pickup_bonus_claimed:
-    #         shaped_reward += 0.5
-    #     # TODO how to decentivize running in obstacles
-    #     goal_x, goal_y = state[7], state[8]
-    #     agent_pos_x, agent_pos_y = state[0], state[1]
-    #     new_agent_pos_x, new_agent_pos_y = next_state[0], next_state[1]
-    #     d_goal_before = abs(agent_pos_x - goal_x) + abs(agent_pos_y - goal_y)
-    #     d_goal_after  = abs(next_state[0] - goal_x) + abs(next_state[1] - goal_y)
+    max_q_value = np.max(q_table[state])
+    best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
 
-    #     if picked_up_now and (d_goal_after < d_goal_before):
-    #         shaped_reward += 0.08
-    #     elif picked_up_now and (d_goal_after > d_goal_before):
-    #         shaped_reward -= 0.04
+    # Randomly choose one of the best actions
+    action = np.random.choice(best_actions)
 
 
-    return random.choice([0, 1, 2, 3, 4, 5]) # Choose a random action
+    return action
     # You can submit this random agent to evaluate the performance of a purely random strategy.
 
