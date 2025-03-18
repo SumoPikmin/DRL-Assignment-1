@@ -27,7 +27,7 @@ def get_action(obs):
     # NOTE 
     # obs = (taxi_row, taxi_col, self.stations[0][0],self.stations[0][1] ,self.stations[1][0],self.stations[1][1],self.stations[2][0],self.stations[2][1],self.stations[3][0],self.stations[3][1],obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look)
     # obs = (taxi_pos, R_pos, G_pos, y_pos, B_pos, obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look) 
-    q_table, _ = load_data()
+    q_table = load_data()
     state = obs
 
     # penalize for hitting obstacles    
