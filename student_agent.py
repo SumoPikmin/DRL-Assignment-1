@@ -30,9 +30,9 @@ def get_action(obs):
     q_table = load_data()
     state = obs
 
-    # penalize for hitting obstacles    
+        
     if state not in q_table:
-        q_table[state] = np.zeros(6, dtype=np.float32)
+        q_table[state] = np.zeros(6, dtype=np.float32) 
 
     max_q_value = np.max(q_table[state])
     best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
