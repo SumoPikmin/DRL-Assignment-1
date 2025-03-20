@@ -28,17 +28,40 @@ def get_action(obs):
     # obs = (taxi_row, taxi_col, self.stations[0][0],self.stations[0][1] ,self.stations[1][0],self.stations[1][1],self.stations[2][0],self.stations[2][1],self.stations[3][0],self.stations[3][1],obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look)
     # obs = (taxi_pos, R_pos, G_pos, y_pos, B_pos, obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look) 
     q_table = load_data()
-    state = obs
+    action_space = [0, 1, 2, 3, 4, 5]
+    #state = obs
 
+    taxi_pos = (obs[0], obs[1])
+    obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
+    passenger_look, drop_look = obs[14], obs[15]
+
+    # Reconstruct `passenger_in_taxi` as done in training
+    passenger_in_taxi = getattr(get_action, "passenger_in_taxi", False)
+    station_positions = [(obs[i], obs[i + 1]) for i in range(2, 10, 2)]
+
+    previous_taxi_pos = getattr(get_action, "previous_taxi_pos", None)
+
+    if previous_taxi_pos in station_positions and taxi_pos != previous_taxi_pos and not passenger_in_taxi:
+        passenger_in_taxi = True  # Infer that the passenger was picked up
+
+    get_action.previous_taxi_pos = taxi_pos
+    get_action.passenger_in_taxi = passenger_in_taxi
+
+    # Use the same state representation as training
+    state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
         
     if state not in q_table:
-        q_table[state] = np.zeros(6, dtype=np.float32) 
+        return np.random.choice(action_space)
 
-    max_q_value = np.max(q_table[state])
-    best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
+    q_values = q_table[state]
+    probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
+    action = np.random.choice(action_space, p=probabilities)
 
-    # Randomly choose one of the best actions
-    action = np.random.choice(best_actions)
+    # max_q_value = np.max(q_table[state])
+    # best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
+
+    # # Randomly choose one of the best actions
+    # action = np.random.choice(best_actions)
 
 
     return action
