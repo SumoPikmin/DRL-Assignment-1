@@ -43,6 +43,7 @@ def get_action(obs):
 
     if previous_taxi_pos in station_positions and taxi_pos != previous_taxi_pos and not passenger_in_taxi:
         passenger_in_taxi = True  # Infer that the passenger was picked up
+        
 
     get_action.previous_taxi_pos = taxi_pos
     get_action.passenger_in_taxi = passenger_in_taxi
