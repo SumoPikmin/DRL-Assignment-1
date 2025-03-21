@@ -32,8 +32,8 @@ def get_action(obs):
     #state = obs
 
     taxi_pos = (obs[0], obs[1])
-    obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
-    passenger_look, drop_look = obs[14], obs[15]
+    # obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
+    # passenger_look, drop_look = obs[14], obs[15]
 
     # Reconstruct `passenger_in_taxi` as done in training
     passenger_in_taxi = getattr(get_action, "passenger_in_taxi", False)
@@ -53,16 +53,15 @@ def get_action(obs):
     if state not in q_table:
         return np.random.choice(action_space)
 
-    q_values = q_table[state]
-    probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
-    action = np.random.choice(action_space, p=probabilities)
+    # q_values = q_table[state]
+    # probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
+    # action = np.random.choice(action_space, p=probabilities)
 
-    # max_q_value = np.max(q_table[state])
-    # best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
+    max_q_value = np.max(q_table[state])
+    best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
 
-    # # Randomly choose one of the best actions
-    # action = np.random.choice(best_actions)
-
+    # Randomly choose one of the best actions
+    action = np.random.choice(best_actions)
 
     return action
     # You can submit this random agent to evaluate the performance of a purely random strategy.
