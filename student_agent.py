@@ -32,6 +32,7 @@ def get_action(obs):
     #state = obs
 
     taxi_pos = (obs[0], obs[1])
+    
     # obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
     passenger_look, drop_look = obs[14], obs[15]
 
