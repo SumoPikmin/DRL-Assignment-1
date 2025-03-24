@@ -55,7 +55,7 @@ def get_action(obs):
         return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
 
 
-    epsilon = 0.1
+    epsilon = 0.05
     if np.random.rand() < epsilon:
         action = np.random.choice(action_space)  # Small chance of exploring
     else:
