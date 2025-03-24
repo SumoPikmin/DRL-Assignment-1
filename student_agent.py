@@ -63,8 +63,6 @@ def get_action(obs):
     best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
 
     # Randomly choose one of the best actions
-    action = np.random.choice(best_actions)
-
-    return action
+    return np.random.choice(best_actions)
     # You can submit this random agent to evaluate the performance of a purely random strategy.
 
