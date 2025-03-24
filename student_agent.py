@@ -33,7 +33,7 @@ def get_action(obs):
 
     taxi_pos = (obs[0], obs[1])
     # obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
-    # passenger_look, drop_look = obs[14], obs[15]
+    passenger_look, drop_look = obs[14], obs[15]
 
     # Reconstruct `passenger_in_taxi` as done in training
     passenger_in_taxi = getattr(get_action, "passenger_in_taxi", False)
@@ -54,7 +54,12 @@ def get_action(obs):
         
     if state not in q_table:
         #return  np.random.choice(action_space, p=[0.225, 0.225, 0.225, 0.225, 0.05, 0.05])
-        return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
+        if not passenger_in_taxi and taxi_pos in station_positions and passenger_look:
+            return 4
+        elif passenger_in_taxi and taxi_pos in station_positions and drop_look:
+            return 5
+        else:
+            return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
 
     # q_values = q_table[state]
     # probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
