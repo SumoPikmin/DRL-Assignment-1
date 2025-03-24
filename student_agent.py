@@ -53,7 +53,8 @@ def get_action(obs):
     state = obs[0:2] + obs[10:16] + (passenger_in_taxi,) + (grid_size,)
         
     if state not in q_table:
-        return  np.random.choice(action_space, p=[0.225, 0.225, 0.225, 0.225, 0.05, 0.05])
+        #return  np.random.choice(action_space, p=[0.225, 0.225, 0.225, 0.225, 0.05, 0.05])
+        return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
 
     # q_values = q_table[state]
     # probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
