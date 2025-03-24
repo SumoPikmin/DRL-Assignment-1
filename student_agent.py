@@ -52,14 +52,12 @@ def get_action(obs):
     # Use the same state representation as training
     state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
         
-    epsilon = 0.05
-    if state not in q_table:
-        return np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
+    epsilon = 0.1
+    if state not in q_table or np.random.rand() < epsilon:
+        action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
+    else:
+        max_q_value = np.max(q_table[state])
+        best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
+        action = np.random.choice(best_actions)
 
-    # elif np.random.rand() < epsilon:
-    #     action = np.random.choice(action_space)  # Small chance of exploring
-
-    # else:
-    max_q_value = np.max(q_table[state])
-    best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
-    return np.random.choice(best_actions)
+    return action
