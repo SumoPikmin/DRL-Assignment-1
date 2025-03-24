@@ -53,8 +53,8 @@ def get_action(obs):
     state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
         
     if state not in q_table:
-        action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
-        
+        return np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
+
     epsilon = 0.05
     if np.random.rand() < epsilon:
         action = np.random.choice(action_space)  # Small chance of exploring
