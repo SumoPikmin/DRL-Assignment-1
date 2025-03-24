@@ -32,7 +32,7 @@ def get_action(obs):
     #state = obs
 
     taxi_pos = (obs[0], obs[1])
-    
+
     # obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
     passenger_look, drop_look = obs[14], obs[15]
 
@@ -59,6 +59,7 @@ def get_action(obs):
     epsilon = 0.05
     if np.random.rand() < epsilon:
         action = np.random.choice(action_space)  # Small chance of exploring
+        return action
     else:
         max_q_value = np.max(q_table[state])
         best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
