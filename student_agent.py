@@ -52,33 +52,17 @@ def get_action(obs):
     # Use the same state representation as training
     state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
         
-    if state not in q_table:
-        return np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
-
     epsilon = 0.05
-    if np.random.rand() < epsilon:
-        action = np.random.choice(action_space)  # Small chance of exploring
-    else:
-        max_q_value = np.max(q_table[state])
-        best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
-        action =  np.random.choice(best_actions)
+    if state not in q_table:
+        action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
+
+    # elif np.random.rand() < epsilon:
+    #     action = np.random.choice(action_space)  # Small chance of exploring
+
+    # else:
+    max_q_value = np.max(q_table[state])
+    best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
+    action =  np.random.choice(best_actions)
     
     return action
-
-    # q_values = q_table[state]
-    # probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
-    # action = np.random.choice(action_space, p=probabilities)
-
-    # q_values = q_table[state]
-    # exp_q_values = np.exp(q_values / 0.5)
-    # prob_distribution = exp_q_values / np.sum(exp_q_values)
-    # return np.random.choice(len(q_values), p=prob_distribution)
-    # max_q_value = np.max(q_table[state])
-    # best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
-
-    # # Randomly choose one of the best actions
-    # action = np.random.choice(best_actions)
-
-    # return action
-    # You can submit this random agent to evaluate the performance of a purely random strategy.
 
