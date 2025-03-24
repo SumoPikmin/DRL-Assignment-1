@@ -55,6 +55,9 @@ def get_action(obs):
     if state not in q_table:
         return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
 
+    # q_values = q_table[state]
+    # probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
+    # action = np.random.choice(action_space, p=probabilities)
 
     epsilon = 0.05
     if np.random.rand() < epsilon:
@@ -65,5 +68,16 @@ def get_action(obs):
         best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
         return np.random.choice(best_actions)
 
-    
+    q_values = q_table[state]
+    exp_q_values = np.exp(q_values / 0.5)
+    prob_distribution = exp_q_values / np.sum(exp_q_values)
+    return np.random.choice(len(q_values), p=prob_distribution)
+    # max_q_value = np.max(q_table[state])
+    # best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
+
+    # # Randomly choose one of the best actions
+    # action = np.random.choice(best_actions)
+
+    # return action
+    # You can submit this random agent to evaluate the performance of a purely random strategy.
 
