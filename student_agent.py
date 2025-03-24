@@ -38,7 +38,6 @@ def get_action(obs):
     # Reconstruct `passenger_in_taxi` as done in training
     passenger_in_taxi = getattr(get_action, "passenger_in_taxi", False)
     station_positions = [(obs[i], obs[i + 1]) for i in range(2, 10, 2)]
-    grid_size = station_positions[-1][0]
 
     previous_taxi_pos = getattr(get_action, "previous_taxi_pos", None)
 
@@ -50,7 +49,7 @@ def get_action(obs):
     get_action.passenger_in_taxi = passenger_in_taxi
 
     # Use the same state representation as training
-    state = obs[0:2] + obs[10:16] + (passenger_in_taxi,) + (grid_size,)
+    state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
         
     if state not in q_table:
         return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
@@ -63,6 +62,8 @@ def get_action(obs):
     best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
 
     # Randomly choose one of the best actions
-    return np.random.choice(best_actions)
+    action = np.random.choice(best_actions)
+
+    return action
     # You can submit this random agent to evaluate the performance of a purely random strategy.
 
