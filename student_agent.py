@@ -55,16 +55,13 @@ def get_action(obs):
         return  np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
 
 
-    epsilon = 0.05
+    epsilon = 0.1
     if np.random.rand() < epsilon:
         action = np.random.choice(action_space)  # Small chance of exploring
     else:
         max_q_value = np.max(q_table[state])
         best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
         return np.random.choice(best_actions)
-    # q_values = q_table[state]
-    # probabilities = np.exp(q_values) / np.sum(np.exp(q_values))  # Softmax
-    # action = np.random.choice(action_space, p=probabilities)
 
     
 
