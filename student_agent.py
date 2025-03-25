@@ -55,5 +55,6 @@ def get_action(obs):
         max_q_value = np.max(q_table[state])
         best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
         action = np.random.choice(best_actions)
+        
 
     return action
