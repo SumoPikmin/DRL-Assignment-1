@@ -40,10 +40,9 @@ def get_action(obs):
     # Use the same state representation as training
     state = obs[0:2] + obs[10:14] + (grid_size,)
         
-    epsilon = 0.05
     # if state not in q_table:
     #     action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
-    if state not in q_table or np.random.rand() < epsilon:
+    if state not in q_table:
         action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
     else:
         max_q_value = np.max(q_table[state])
