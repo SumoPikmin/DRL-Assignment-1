@@ -42,7 +42,6 @@ def get_action(obs):
         passenger_in_taxi = True  # Infer that the passenger was picked up
         
 
-
     get_action.previous_taxi_pos = taxi_pos
     get_action.passenger_in_taxi = passenger_in_taxi
 
