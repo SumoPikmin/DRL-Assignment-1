@@ -42,6 +42,7 @@ def get_action(obs):
         passenger_in_taxi = True  # Infer that the passenger was picked up
         
 
+
     get_action.previous_taxi_pos = taxi_pos
     get_action.passenger_in_taxi = passenger_in_taxi
 
@@ -54,6 +55,6 @@ def get_action(obs):
         max_q_value = np.max(q_table[state])
         best_actions = [i for i, q in enumerate(q_table[state]) if q == max_q_value]
         action = np.random.choice(best_actions)
-        
+
 
     return action
