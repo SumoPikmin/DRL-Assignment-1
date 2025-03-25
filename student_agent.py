@@ -29,12 +29,8 @@ def get_action(obs):
     # obs = (taxi_pos, R_pos, G_pos, y_pos, B_pos, obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look) 
     q_table = load_data()
     action_space = [0, 1, 2, 3, 4, 5]
-    #state = obs
 
     taxi_pos = (obs[0], obs[1])
-
-    # obstacle_north, obstacle_south, obstacle_east, obstacle_west = obs[10:14]
-    passenger_look, drop_look = obs[14], obs[15]
 
     # Reconstruct `passenger_in_taxi` as done in training
     passenger_in_taxi = getattr(get_action, "passenger_in_taxi", False)
@@ -52,8 +48,6 @@ def get_action(obs):
     # Use the same state representation as training
     state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
         
-    # if state not in q_table:
-    #     action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
     if state not in q_table:
         action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
     else:
