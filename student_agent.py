@@ -42,14 +42,13 @@ def get_action(obs):
         passenger_in_taxi = True  # Infer that the passenger was picked up
         
 
-
     get_action.previous_taxi_pos = taxi_pos
     get_action.passenger_in_taxi = passenger_in_taxi
 
     # Use the same state representation as training
     state = obs[0:2] + obs[10:16] + (passenger_in_taxi,)
     
-    if state not in q_table or np.random.rand() < 0.05:
+    if state not in q_table:
         action = np.random.choice(action_space, p=[0.25, 0.25, 0.25, 0.25, 0, 0])
     else:
         max_q_value = np.max(q_table[state])
